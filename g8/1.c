@@ -5,7 +5,9 @@ void convert(int mat[][5], int n)
 {
     int i, j;
     for (i = 0; i <= n; i++)
-        for (j = 0; j <= n; j++)
-            if (mat[i][j] != 0)
-                if (mat[j][i] == 0)
+        for (j = i + 1; j <= n; j++){
+            mat[i][j] += mat[j][i];
+            mat[j][i] = mat[i][j];
+        }
+
 }
