@@ -13,3 +13,12 @@ int nodoimp(arbol A, int n)
     else
         return
 }
+
+int acum(arbol A, int k){
+    if (A == NULL)
+        return 0;
+    else
+        if ()
+            while 
+
+}
