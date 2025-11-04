@@ -25,8 +25,15 @@ void DFS(int mat[][MAX], int n, int ini)
         i++;
         while (!vacia(P))
         {
-            vert = consulta(P);
-            k = vertady
+            vert = vertady(mat, consultaP(P));
+            if (vert != -1)
+            {
+                v[vert] = i;
+                poneP(&P, vert);
+                printf("%d", vert);
+            }
+            else
+                sacaP(&P, vert);
         }
     }
 }
