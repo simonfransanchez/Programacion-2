@@ -1,7 +1,7 @@
 /* Para un grafo almacenado en una matriz de adyacencia, desarrollar funciones para:
 a) mostrar todos sus vértices mediante recorrido en profundidad
 b) mostrar todos sus vértices mediante recorrido en amplitud
-c) devolver la cantidad de componentes conexas*/
+c) devolver la cantidad de componentes conexas (buscar el maximo en el VCC)*/
 
 #define MAX 10
 
