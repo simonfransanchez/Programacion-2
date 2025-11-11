@@ -32,7 +32,8 @@ int grado_arbol(arbol A)
 {
     int gri, grd, gr;
     if (A == NULL)
-        return 0 else
+        return 0;
+    else
         {
             gri = grado_arbol(A->izq);
             grd = grado_arbol(A->der);
