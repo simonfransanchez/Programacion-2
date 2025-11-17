@@ -2,11 +2,7 @@
 #include <stdlib.h>
 #include "colas.h"
 #define ST9 9
-#define P 0
-#define C 1
-#define T 2
-#define E 3
-#define M 4
+#define MAXV 5
 
 typedef struct nodito
 {
@@ -42,12 +38,12 @@ typedef struct
 
 void insertaLD(TLDP *LDP, TElementoC x);
 TSLista busca_pac(TLH LH);
-void ia(TLH *LH, TCola *C, TLDP *LDP);
-void ib() void ic()
+void ia(TLH LH, TCola *C, TLDP *LDP);
+void ib(TLH LH, int vc[], char vt[]);
+void ic();
 
-    void main()
-{
-}
+void main()
+{}
 
 void insertaLD(TLDP *LDP, TElementoC x)
 {
@@ -97,40 +93,31 @@ TSLista busca_pac(TLH LH, char dni[ST9])
     return pac;
 }
 
-void ia(TLH LH, TCola *C, TLDP *LDP)
-{
+void ia(TLH LH, TCola *C, TLDP *LDP){
     TElementoC x;
     TSLista act, ing;
     TLH aux;
     int cumple = 0, ctot = 0, cpos = 0;
-    while (!vacia(C))
-    {
+    while (!vacia(C)){
         sacaC(C, &x);
         ing = NULL;
-        if (x->ing == 'N')
+        if (x.ing == 'N')
             ing = busca_pac(LH, x.dni);
         aux = LH;
-        while (aux && cumple == 0)
-        {
-            if (aux->tipo == x.tipo)
-            {
+        while (aux && cumple == 0){
+            if (aux->tipo == x.tipo){
                 act = aux->sub;
-                if (x.hi == 'S')
-                {
-                    if (act && act->sig == NULL && strcmp(act->dni, "") == 0)
-                    {
+                if (x.hi == 'S'){
+                    if (act && act->sig == NULL && strcmp(act->dni, "") == 0){
                         cumple = 1;
                         strcpy(act->dni, x.dni);
                     }
                 }
-                else
-                {
-                    if (act && act->sig)
-                    {
+                else{
+                    if (act && act->sig){
                         while (act && strcmp(act->dni, ""))
                             act = act->sig;
-                        if (act)
-                        {
+                        if (act){
                             cumple = 1;
                             strcpy(act->dni, x.dni);
                         }
@@ -149,3 +136,43 @@ void ia(TLH LH, TCola *C, TLDP *LDP)
     if (ctot > 0)
         printf("el porcentaje d pedidos concretados es %f", (100.0 * cpos / ctot), "%");
 }
+int busca_pos(char v[], char x){
+    int i = 0;
+    while (v[i] != x)
+        i++;
+    return i;
+}
+void ib(TLH *LH,TLDP *LDP, int vc[], char vt[]){ //main: int vc[MAXV] = {0}, char vt[MAXV] = {'P','C','T','E','M'}
+    TSLista acts,ants;
+    TLH act,ant;
+    TElementoC x;
+    int i;
+    act = *LH;
+    while (act->num < 100)
+        act = act->sig;
+    while (act->num < 200){
+        i = busca_pos(vt,act->tipo);
+        acts = act->sub;
+        while (acts){
+            ants = acts;
+            acts = acts->sig;
+            if (strcmp(ants->dni,"")){
+                vc[i]++;
+                strcpy(x.dni,ants->dni);
+                x.tipo = act->tipo;
+                x.hi = x.ing = 'N';
+                insertaLD(LDP,x);
+            }
+            free(ants);
+        }
+    }
+}
+
+void ic(int v[], int n, int *max, int *pos){
+    if (n != 0){
+        if (v[n] > *max){
+            *max = v[n];
+            *pos = v[n];
+        }
+        ic(v,n-1,max,pos);
+    }
