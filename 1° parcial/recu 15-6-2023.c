@@ -99,3 +99,30 @@ void ia(TLC LC, TLS LS){
         printf("no se abrio el archivo papu");
     fclose(arch);
 }
+
+void ib(TLS LS){
+    int cont, max = 0;
+    char pat[ST7];
+    TCola C;
+    TElementoC x;
+    while (LS){
+        cont = 0;
+        while (!vacia(LS->C)){
+            sacaC(&(LS->C),&x);
+            if (x.cant == 0)
+                cont++;
+            else
+                poneC(&C,x);
+        }
+        if (cont > max){
+            max = cont;
+            strcpy(pat,LS->pat);
+        }
+        while (!vaciaC(C)){
+            sacaC(&C,&x);
+            pone(&(LS->C),x);
+        }
+        LS = LS->sig;
+    }
+    printf("%s", pat);
+}
