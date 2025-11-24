@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "colas.h"
 #define ST9 9
 #define MAXV 5
@@ -11,17 +12,17 @@ typedef struct nodito
     struct nodito *sig;
 } nodito;
 
-typedef nodito *TSLista;
+typedef nodito *TSL;
 
 typedef struct nodoS
 {
     unsigned int num;
     char tipo;
-    TSLista sub;
+    TSL sub;
     struct nodoS *sig;
 } nodoS;
 
-typedef nodoS *TLH;
+typedef nodoS *TLS;
 
 typedef struct nodoD
 {
@@ -34,7 +35,7 @@ typedef nodoD *PnodoD;
 typedef struct
 {
     PnodoD pri, ult;
-} TLDP;
+} TLD;
 
 void insertaLD(TLDP *LDP, TElementoC x);
 TSLista busca_pac(TLH LH);
@@ -93,52 +94,30 @@ TSLista busca_pac(TLH LH, char dni[ST9])
     return pac;
 }
 
-void ia(TLH LH, TCola *C, TLDP *LDP){
+void ia(TLD *LD, TLS LS, TCola *C){
     TElementoC x;
-    TSLista act, ing;
-    TLH aux;
-    int cumple = 0, ctot = 0, cpos = 0;
-    while (!vacia(C)){
-        sacaC(C, &x);
-        ing = NULL;
-        if (x.ing == 'N')
-            ing = busca_pac(LH, x.dni);
-        aux = LH;
-        while (aux && cumple == 0){
-            if (aux->tipo == x.tipo){
-                act = aux->sub;
-                if (x.hi == 'S'){
-                    if (act && act->sig == NULL && strcmp(act->dni, "") == 0){
-                        cumple = 1;
-                        strcpy(act->dni, x.dni);
+    TSL auxS;
+    while (!vaciaC(*C)){
+        sacaC(C,&x);
+        ing = x.ing == 'N';
+        while (LS){
+            if (LS->tipo == x.tipo){
+                auxS = LS->sub;
+                while(auxS && (ing == 0 || enc == 0)){
+                    if (ing == 0 && strcmp(auxS->dni,x.dni) == 0){
+                        ing = 1;
+                        strcpy(auxS->dni,"");
                     }
-                }
-                else{
-                    if (act && act->sig){
-                        while (act && strcmp(act->dni, ""))
-                            act = act->sig;
-                        if (act){
-                            cumple = 1;
-                            strcpy(act->dni, x.dni);
-                        }
-                    }
+                    if (hi && auxS->sig == NULL && auxS->dni[0] == "")
                 }
             }
-            aux = aux->sig;
         }
-        if (aux == NULL)
-            inserta(LDP, x);
-        if (ing)
-            strcpy(ing->dni, "");
-        ctot++;
-        cpos += cumple;
     }
-    if (ctot > 0)
-        printf("el porcentaje d pedidos concretados es %f", (100.0 * cpos / ctot), "%");
 }
+
 int busca_pos(char v[], char x){
     int i = 0;
-    while (v[i] != x)
+    while (strcmp(v[i],x))
         i++;
     return i;
 }

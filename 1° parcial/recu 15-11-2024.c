@@ -43,7 +43,7 @@ void ia(TLC LCP, unsigned int p){
     FILE *arch = fopen("MEDICIONES.TXT","rt");
     unsigned int hora;
     char cc[ST3];
-    TLC act, ant, nuevoC;
+    TLC nuevoC;
     TSL aux,nuevoS;
     if (arch){
         nuevoC->num = p;
@@ -75,8 +75,89 @@ void insertaLC(TLC LC, TLC nuevo){
     ant->sig = nuevo;
 }
 
-void ib(TLC TCP, TLS LSC, char cod[ST3]){
+void ib(TLC LCP, TLS LSC, char cod[ST3]){
     TLS aux;
-    aux = LSC;
-    while (aux && strcmp())
+    TSL act;
+    unsigned int ant;
+    auxS = LSC;
+    TElementoP x;
+    while (auxS && strcmp(auxS->cod,cod))
+        auxS = auxS->sig;
+    if (auxS){
+        act = LCP->sub;
+        x.num = ant = 0;
+        while (act){
+            if (strcmp(act->cod,cod) == 0){
+                x.num++;
+                x.dur = act->hora - ant;
+                ant = act->hora;
+                cargaP(&(aux->P),x);
+            }
+            act = act->sig;
+        }
+        printf("%s %s %d",aux->ctt,aux->nom,consulta(aux->P));
+    }
+    else
+        printf("el corredor no termino la carrera");
+}
+
+void cargaP(TPila *P, TElementoP x){
+    TElementoP z;
+    if (!vaciaP(*P)){
+        sacaP(P,&z);
+        if (x.dur > z.dur)
+            cargaP(P,x);
+        else
+            poneP(P,z);
+    }
+    pone(P,x);
+}
+
+void corredores(TLS LS,char c1,char c2,char ctt){
+    int i = 0;
+    while (i < 2){
+        if (strcmp(LS->ctt,ctt) == 0){
+            i++;
+            if (i == 1)
+                strcpy(c1,LS->cod);
+            else
+                strcpy(c2,LS->cod);
+        }
+        LS = LS->sig;
+    }
+}
+
+void ic(TLS LS, TLC LC,char ctt){
+    TSL act,ant;
+    TLC auxC;
+    char c1,c2;
+    int i;
+    auxC = LC;
+    corredores(LS,c1,c2,ctt);
+    do{
+        i = 0;
+        auxC = auxC->sig;
+        act = auxC->sub;
+        ant = NULL;
+        while (i < 2){
+            elim = NULL;
+            if (strcmp(act->cod,c1) == 0 || strcmp(act->cod,c2) == 0){
+                i++;
+                elim = act;
+                act = act->sig;
+                if (ant == NULL)
+                    auxC->sub = act;
+                else
+                    ant->sig = act;
+            }
+            if (elim){
+                free(elim);
+            }
+            else{
+                ant = act;
+                act = act->sig;
+            }
+        }
+    }
+    while (auxC != LC);
 }
